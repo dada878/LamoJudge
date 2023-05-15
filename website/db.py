@@ -1,6 +1,9 @@
 import pymongo
 from pymongo import MongoClient
 
-cluster = pymongo.MongoClient("mongodb+srv://admin:IXMzXfgEFKaGqZGy@judgedb.580rhfp.mongodb.net/?retryWrites=true&w=majority")
+with open("mongoDB.txt", "r", encoding="UTF8") as f:
+    url = f.read()
+
+cluster = pymongo.MongoClient(url)
 
 db = cluster['lmaojudge']
