@@ -1,3 +1,7 @@
+p {
+	margin-bottom: 0rem;
+}
+
 :root{
 	--linkcolor: #d9720b;
 	--backcolor: rgba(33, 45, 57, 0.902);
@@ -7,6 +11,8 @@
 body{
 	background-color: rgba(255, 255, 224, 0.562);
 }
+
+
 
 .container a:link:not(.page-link), .container a:visited:not(.page-link){
 	color: var(--linkcolor);
@@ -65,23 +71,27 @@ nav{
 
 @media (min-width: 1400px) {
   .container {
-    max-width: 1600px;
+    max-width: 1200px;
   }
+}
+
+.link-btn {
+	text-align: center;
 }
 
 /*box displaying main contents*/
 .box{
 	display: inline-block;
-	margin-top: 25px;
-	margin-bottom: 25px;
+	margin-top: 1rem;
 	border: 2px var(--backcolor) solid;
 	border-radius: 7px;
 	vertical-align: top;
+
 }
 
-.box > div:not(.caption){
-	padding-left: 8px;
-	padding-right: 8px;
+.box > *:not(.caption):not(div){
+	padding: 1rem;
+	white-space: pre-wrap;       /* Since CSS 2.1 */
 }
 
 .box > button{
@@ -143,6 +153,7 @@ nav{
 	display: inline-block;
 	vertical-align: top;
 	width: 80%;
+	margin-bottom: 3rem;
 }
 .two_col_20{
 	display: inline-block;

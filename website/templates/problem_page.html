@@ -1,38 +1,38 @@
-<link rel="stylesheet" href='{{ url_for("static", filename = "css/problem_page.css") }}'>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 {% extends "base.html" %}
 {% block content %}
+<link rel="stylesheet" href='{{ url_for("static", filename = "css/problem_page.css") }}'>
+<script>
+	MathJax = {
+  tex: {
+	inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+	fontCache: 'global'
+  }
+};
+  </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-<div>
+<div style="margin-top:1rem">
 	<h2>{{ problem['name'] }}</h2>
 	<div id="id_box">{{ problem['pid'] }}</div>
 </div>
 <div class="two_col_80">
-	<div class="navbar navbar-expand-md" id="buttonrow" style="width: 98%; justify-content: left;">
-		<a id="submitbut" href="/submit/{{ problem['pid'] }}">Submit</a>
-		<a id="allsubbut" href="/submissions_list/?pid={{ problem['pid'] }}">All Submission</a>
-		{% if session['user'] %}
-			<a id="mysubbut" href="/submissions_list/?pid={{ problem['pid'] }}&user={{ session['user']['name'] }}">My Submission</a>
-		{% else %}
-			<a id="mysubbut" href="/submissions_list/?pid={{ problem['pid'] }}&user=">My Submission</a>
-		{% endif %}
-		<a id="rankbut" href="/">Rank</a>
-	</div>
 
 	<div class="box" style="width: 98%;">
 		<div class="caption">Statement</div>
-		<div> {{ problem['statement'] }}</div>
+		<p> {{ problem['statement'] }}</p>
 	</div>
 
 	<div class="box two_col_half">
 		<div class="caption">Input</div>
-		<div> {{ problem['i_format'] }}</div>
+		<p> {{ problem['i_format'] }}</p>
 	</div>
 
 	<div class="box two_col_half">
 		<div class="caption">Output</div>
-		<div> {{ problem['o_format'] }}</div>
+		<p> {{ problem['o_format'] }}</p>
 	</div>
 	{% for i in range(lens) %}
 		<div class="box two_col_half">
@@ -47,6 +47,22 @@
 </div>
 
 <div class="two_col_20">
+	<div class="box">
+		<div class="caption">Actions</div>
+		<table class="table">
+			<tbody>
+				<tr class="link-btn">
+					<td><a href="/submit/{{ problem['pid'] }}">Submit</a></td>
+				</tr>
+				<tr class="link-btn">
+					<td><a href="/submissions_list/?pid={{ problem['pid'] }}">All Submission</a></td>
+				</tr>
+				<tr class="link-btn">
+					<td>{% if session['user'] %}<a id="mysubbut" href="/submissions_list/?pid={{ problem['pid'] }}&user={{ session['user']['name'] }}">My Submission</a>{% else %}<a id="mysubbut" href="/submissions_list/?pid={{ problem['pid'] }}&user=">My Submission</a>{% endif %}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 	<div class="box">
 		<div class="caption">Problem Info</div>
 		<table class="table">
@@ -118,3 +134,5 @@
 	}
 </script>
 {% endblock %}
+</body>
+</html>

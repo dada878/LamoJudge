@@ -3,15 +3,13 @@
 {% block title %} Submit {% endblock %}
 {% block content %}
 <div class="submit-box">
-	<h2>name_of_the_problem</h2>
-	<div id="id_box">{{ id }}</div>
-	<form class="form-group" action="/submit/{{ id }}" method="post">
+	<h2>{{ problem['name']}}</h2>
+	<div id="id_box">{{ problem['pid'] }}</div>
+	<form class="form-group" action="/submit/{{  problem['pid'] }}" method="post">
 		<div id="description">Choose Language(Compiler)</div>
 		<div id="choose">
 			<select class="form-select" style="margin-right: 10px" name="lang">
 				<option value="c++">c++</option>
-				<option value="c">c(not done)</option>
-				<option value="python3">python3</option>
 			</select>
 		</div>
 		<div id="description">Source Code</div>

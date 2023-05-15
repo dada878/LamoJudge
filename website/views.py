@@ -29,7 +29,20 @@ def show_problems():
     page = min(page, max_problem_page)
     page = max(0, page)
 
-    problems = db['problems'].find({"pid" : { "$gt" : page*per_page, "$lt": (page+1)*per_page }},{'_id':0,'pid': 1, 'name': 1, 'topcoder': 1, 'ac_user': 1, 'ac_submission': 1})
+    problems = db['problems'].find(
+        {
+            "pid" : {
+                "$gt" : page*per_page, "$lt": (page+1)*per_page
+                }
+            }, {
+                '_id':0,
+                'pid': 1,
+                'name': 1,
+                'topcoder': 1,
+                'ac_user': 1, 
+                'ac_submission': 1
+            }
+        )
     # while problems.alive:
     #     print(problems.next()['pid'])
     return render_template("problems.html", problems = problems, page = page, max_problem_page = max_problem_page, left=max(0, page-6), right=min(max_problem_page, page+7))
@@ -42,6 +55,7 @@ def problem_page(pid):
         return render_template("/error/problem_not_exist.html")
 
     lens = len(problem['i_sample'])
+    problem["statement"] = problem["statement"]
     return render_template("problem_page.html", problem = problem, lens=lens)
 
 @views.route('/contests')
@@ -72,7 +86,7 @@ def submissions_list():
         {'verdict': 1, 'lang': 1, 'prob': 1, 'subtime': 1, 'userid': 1}).sort("_id", -1)
 
     #page
-    per_page = 10
+    per_page = 20
     all_cnt = db['submission_data'].count_documents(query)
     page = int(request.args.get("page",0))
     max_page = int(all_cnt/(per_page+1))
@@ -97,11 +111,12 @@ def submit(id):
         subid = new_submission(code, lang, id, session['user']['name'])
 
         #judge in another thread
-        td = threading.Thread(target = judgement, args = [id, code, lang, subid])
+        td = threading.Thread(target = judgement, args = [int(id), code, subid])
         td.start()
         return redirect(url_for('views.single_submission', id=subid))
-
-    return render_template("submit.html", id=id)
+    
+    problem = db['problems'].find_one({"pid": int(id)})
+    return render_template("submit.html", problem=problem)
 
 @views.route('/announce/<id>')
 def getannounce(id):

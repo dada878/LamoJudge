@@ -15,8 +15,8 @@ def login():
         elif len(password) < 7 : 
             flash('密碼必須至少有7個字', category='error')
         else:
-            allaccount = db['account']
-            account = allaccount.find_one({'email': email})
+            allAccount = db['account']
+            account = allAccount.find_one({'email': email})
             if account['password'] != password:
                 flash('密碼錯誤!', category='error')
             else:
@@ -38,7 +38,7 @@ def logout():
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def signup():
-    allaccount = db['account']
+    allAccount = db['account']
     if not session.get('logged'):
         session['logged'] = None
     if request.method == 'POST':
@@ -46,7 +46,7 @@ def signup():
         email = request.form.get('email')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
-        exist = allaccount.find_one({'email': email})
+        exist = allAccount.find_one({'email': email})
         if password1!=password2 :
             flash('驗證密碼必須與密碼相同', category='error')
         elif len(name) < 2:
@@ -60,7 +60,7 @@ def signup():
         else:
             today = datetime.now()
             today = today.strftime("%Y/%m/%d %H:%M:%S")
-            newaccount = {
+            newAccount = {
                 'name': name,
                 'email': email,
                 'password': password1,
@@ -69,8 +69,9 @@ def signup():
                 'attempted': 0,
                 # 'AC rate': 0,
                 'signed up': f"{today}",
+                "solved": []
             }
-            allaccount.insert_one(newaccount)
+            allAccount.insert_one(newAccount)
             flash('註冊成功!',category='success')
             redirect('/')
         

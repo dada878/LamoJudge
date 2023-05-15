@@ -23,7 +23,7 @@
 				<td>{{ id }}</td>
 				<td><a href="/problems/{{ pid }}">{{ pid }}</a></td>
 				<td><a href="/user/{{ user }}">{{ user }}</a></td>
-				<td><span class="verdict">loading..</span></td>
+				<td><span class="verdict"> - </span></td>
 				<td>{{ subtime }}</td>
 				<td>{{ lang }}</td>
 			</tr>
@@ -85,9 +85,9 @@
 			<tbody>
 				<tr id="tk{{ i|string + j|string }}">
 					<td>{{ i+1 }}</td>
-					<td>running..</td>
-					<td>- ms</td>
-					<td>- kb</td>
+					<td> - </td>
+					<td> - </td>
+					<td> - </td>
 				</tr>
 			</tbody>
 			{% endfor %}
@@ -100,8 +100,10 @@
 const verd = document.getElementsByClassName('verdict')
 var curi = 0
 var curj = 0
-var upd = setInterval(function(){
+
+const fetchData = function() {
 	var req = new XMLHttpRequest()
+	
 	req.open('GET', window.location.href+'/get_data')
 	req.onreadystatechange = function(){
 		if(req.readyState == 4){
@@ -112,9 +114,11 @@ var upd = setInterval(function(){
 					if(ret.subtask[curi][curj][0] != ""){
 						const info = document.getElementById('tk' + String(curi) + String(curj))
 						info.childNodes[3].innerText = ret.subtask[curi][curj][0]
+						if (ret.subtask[curi][curj][0] == 'AC') info.childNodes[3].style = "background-color: #98fb98"
+						else info.childNodes[3].style = "background-color: #f07c7c"
 						if(ret.subtask[curi][curj][0] != 'abort'){
 							info.childNodes[5].innerText = ret.subtask[curi][curj][1] + " ms"
-							info.childNodes[7].innerText = ret.subtask[curi][curj][2] + " kb"
+							info.childNodes[7].innerText = ret.subtask[curi][curj][2] + " mb"
 						}
 						curj += 1
 					}
@@ -148,7 +152,13 @@ var upd = setInterval(function(){
 		}
 	}
 	req.send()
-}, 100)
+}
+
+var upd = setInterval(function(){
+	fetchData();
+}, 2000)
+
+fetchData();
 
 </script>
 
