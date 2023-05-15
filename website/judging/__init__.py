@@ -17,7 +17,7 @@ class RunCodeResult:
 def compileCode(code) -> str | None:
     with open('./sandbox/submission.cpp', 'w', encoding="UTF8") as f:
         f.write(code)
-    command = f'docker run --memory=100m --rm -v {os.getcwd()}/sandbox:/sandbox cpp_image /bin/sh -c "cd /sandbox && g++ submission.cpp -o submission 2>&1 >/dev/null"'
+    command = f'docker run --memory=100m --rm -v {os.getcwd()}/sandbox:/sandbox judge-sandbox /bin/sh -c "cd /sandbox && g++ submission.cpp -o submission 2>&1 >/dev/null"'
     execute = subprocess.Popen(command, text=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     result = execute.communicate(timeout=3000)
     if execute.returncode == 1: return result[0]
@@ -25,7 +25,7 @@ def compileCode(code) -> str | None:
 def runCode(inputData, timeLimit, memoryLimit) -> RunCodeResult:
     with open('./sandbox/data.in', 'w', encoding="UTF8") as f:
         f.write(inputData)
-    command = f'docker run --memory={memoryLimit}m --rm -v {os.getcwd()}/sandbox:/sandbox cpp_image /bin/sh -c "cd /sandbox && ./submission < data.in"'
+    command = f'docker run --memory={memoryLimit}m --rm -v {os.getcwd()}/sandbox:/sandbox judge-sandbox /bin/sh -c "cd /sandbox && ./submission < data.in"'
     startTime = time.time()
     try:
         execute = subprocess.Popen(command, text=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
