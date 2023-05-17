@@ -30,7 +30,7 @@ def runCode(inputData, timeLimit, memoryLimit) -> RunCodeResult:
     try:
         execute = subprocess.Popen(command, text=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         memoryUsage = int(psutil.Process(execute.pid).memory_info().rss / 1024 / 1024)
-        result = execute.communicate(timeout=timeLimit / 1000 + 2)
+        result = execute.communicate(timeout=timeLimit / 1000)
         timeUsage = round(max(time.time() - startTime - 1, 0) * 1000)
         if (execute.returncode != 0):
             return RunCodeResult(result[0], timeUsage, memoryUsage, "Compile Error")
